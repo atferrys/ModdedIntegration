@@ -10,7 +10,7 @@ This Plugin needs some dependencies in order to work.
 Put the [plugin jar](https://github.com/UknownGino/ModdedIntegration/releases/latest/download/ModdedIntegration.jar) in your plugins folder and start your server.
 Now the [Essentials](https://www.spigotmc.org/resources/essentialsx.9089/)' [items.csv file](https://github.com/EssentialsX/Essentials/blob/2.x/Essentials/src/main/resources/items.csv) is populated.
 
-To use modded materials with essentials you need to follow the following scheme: `ModID_ItemID`  
+To use modded materials with essentials you need to follow the following scheme ➠ `ModID_ItemID`  
 Example with the [ToughAsNails Mod](https://www.curseforge.com/minecraft/mc-mods/tough-as-nails) ➠ **/give < playerName > toughasnails_purified_water_bottle**
 # ❓ How it works?
 The plugin gets all of the modded materials (blocks and items) and puts them into the essentials' [items.csv](https://github.com/EssentialsX/Essentials/blob/2.x/Essentials/src/main/resources/items.csv) file.
