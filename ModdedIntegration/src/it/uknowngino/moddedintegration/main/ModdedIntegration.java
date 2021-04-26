@@ -3,6 +3,7 @@ package it.uknowngino.moddedintegration.main;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import it.uknowngino.moddedintegration.commands.ModdedIntegrationCommand;
 import it.uknowngino.moddedintegration.functions.IntegrationUtils;
 
 public class ModdedIntegration extends JavaPlugin {
@@ -24,6 +25,8 @@ public class ModdedIntegration extends JavaPlugin {
 			
 		}
 		
+		registerCommands();
+		
 		System.out.println("ModdedIntegration » Plugin enabled!");
 
 	}
@@ -37,6 +40,12 @@ public class ModdedIntegration extends JavaPlugin {
 	public static ModdedIntegration getInstance() {
 		
 		return plugin;
+		
+	}
+	
+	private void registerCommands() {
+		
+		getCommand("moddedintegration").setExecutor(new ModdedIntegrationCommand());
 		
 	}
 

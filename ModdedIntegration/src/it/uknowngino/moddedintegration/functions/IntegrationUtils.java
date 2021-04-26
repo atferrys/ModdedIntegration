@@ -15,6 +15,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class IntegrationUtils {
+	
+	public static Integer loadedMaterials = 0;
 
 	@SuppressWarnings("deprecation")
 	public static void populateCSV() {
@@ -39,14 +41,22 @@ public class IntegrationUtils {
 				
 				BufferedWriter writer = new BufferedWriter(new FileWriter(itemsFile, true));
 				
+				loadedMaterials = 0;
+				
 				for(Map.Entry<ResourceLocation, Item> itemEntry : ForgeRegistries.ITEMS.getEntries()) {
 					
 					Material item = Material.getMaterial(itemEntry.getKey().toString().toUpperCase().replaceAll("(:|\\s)", "_").replaceAll("\\W", ""));
 					
-					if(item != null && !oldItems.contains(item.toString())) {
+					if(item != null) {
 						
-						writer.append("\n" + item.toString().toLowerCase() + "," + item.getId() + ",0");
+						loadedMaterials++;
+						
+						if(!oldItems.contains(item.toString())) {
 							
+							writer.append("\n" + item.toString().toLowerCase() + "," + item.getId() + ",0");
+							
+						}
+	
 					}
 					
 				}
