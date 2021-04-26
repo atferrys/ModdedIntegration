@@ -1,5 +1,5 @@
 # ModdedIntegration
-[![Version](https://img.shields.io/badge/version-1.0-blue)](https://github.com/UknownGino/ModdedIntegration/releases/latest) [![Download](https://img.shields.io/badge/download-latest-brightgreen)](https://github.com/UknownGino/ModdedIntegration/releases/latest/download/ModdedIntegration.jar)  
+[![Version](https://img.shields.io/badge/version-1.1-blue)](https://github.com/UknownGino/ModdedIntegration/releases/latest) [![Download](https://img.shields.io/badge/download-latest-brightgreen)](https://github.com/UknownGino/ModdedIntegration/releases/latest/download/ModdedIntegration.jar)  
 
 A simple Minecraft Plugin that auto-populates the [EssentialsX](https://www.spigotmc.org/resources/essentialsx.9089/)'s [items.csv file](https://github.com/EssentialsX/Essentials/blob/2.x/Essentials/src/main/resources/items.csv) with [Forge](http://files.minecraftforge.net/) items and blocks.
 # ✅ Requirements
