@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import it.uknowngino.moddedintegration.commands.ModdedIntegrationCommand;
+import it.uknowngino.moddedintegration.functions.ChatUtils;
 import it.uknowngino.moddedintegration.functions.IntegrationUtils;
 
 public class ModdedIntegration extends JavaPlugin {
@@ -27,13 +28,13 @@ public class ModdedIntegration extends JavaPlugin {
 		
 		registerCommands();
 		
-		System.out.println("ModdedIntegration » Plugin enabled!");
+		System.out.println(ChatUtils.color("ModdedIntegration » Plugin &aenabled&r!"));
 
 	}
 	
 	public void onDisable() {
 		
-		System.out.println("ModdedIntegration » Plugin disabled!");
+		System.out.println(ChatUtils.color("ModdedIntegration » Plugin &cdisabled&r!"));
 		
 	}
 	
