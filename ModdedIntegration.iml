@@ -22,5 +22,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Magma-1bc8635-plugin" level="project" />
     <orderEntry type="library" name="spigot-1.12.2" level="project" />
+    <orderEntry type="library" name="EssentialsX-2.20.0-dev+3-c4f10d9" level="project" />
   </component>
 </module>

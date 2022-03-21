@@ -2,17 +2,19 @@ package it.uknowngino.moddedintegration.main;
 
 import it.uknowngino.moddedintegration.commands.ModdedIntegrationCommand;
 import it.uknowngino.moddedintegration.config.Config;
-import it.uknowngino.moddedintegration.functions.IntegrationUtils;
-import it.uknowngino.moddedintegration.functions.LogUtils;
+import it.uknowngino.moddedintegration.enums.ServerVersion;
+import it.uknowngino.moddedintegration.utils.IntegrationUtils;
+import it.uknowngino.moddedintegration.utils.LogUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
 public class ModdedIntegration extends JavaPlugin {
-	
-	static ModdedIntegration plugin;
-	
+
+	public static final ServerVersion SERVER_VERSION = ServerVersion.getCurrentServerVersion();
+	private static ModdedIntegration plugin;
+
 	public void onEnable() {
 		
 		plugin = this;
@@ -20,9 +22,10 @@ public class ModdedIntegration extends JavaPlugin {
 		if(Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
 
 			Config.reload();
-			IntegrationUtils.populateCSV();
+			IntegrationUtils.populateItemsFile();
+
 			registerCommands();
-			LogUtils.log(Level.INFO, "The plugin has been enabled successfully.");
+			LogUtils.log(Level.INFO, "The plugin has been enabled successfully with Implementation " + SERVER_VERSION + ".");
 
 		} else {
 

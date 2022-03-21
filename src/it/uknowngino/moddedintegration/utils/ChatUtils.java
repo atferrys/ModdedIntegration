@@ -1,4 +1,4 @@
-package it.uknowngino.moddedintegration.functions;
+package it.uknowngino.moddedintegration.utils;
 
 import org.bukkit.ChatColor;
 
