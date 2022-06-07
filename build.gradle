@@ -1,0 +1,102 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'java-library'
+apply plugin: 'java'
+
+libsDirName = System.getenv("libsDirName") == null ? libsDirName : System.getenv("libsDirName")
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+compileJava.options.encoding = 'UTF-8'
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+
+        resources {
+            srcDirs 'resources'
+        }
+    }
+    
+    test {
+    	java {
+            srcDirs 'test'
+        }
+    }
+}
+
+repositories {
+	mavenCentral()
+	
+    flatDir {
+        dirs 'libs'
+    }
+
+	maven {
+        url = "https://repo.essentialsx.net/releases/"
+    }
+
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+
+    maven {
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+configurations {
+    internalLibs
+    implementation.extendsFrom(internalLibs)
+}
+
+dependencies {
+    this.addModularCompile('net.essentialsx:EssentialsX:2.19.4', 'EssentialsX', false)
+    this.addModularCompile('org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT', 'spigot', false)
+    compileOnly fileTree(dir: 'libs', include: '*.jar') // Needed for Magma
+}
+
+boolean checkLib(String filePath) {
+    return file('libs/' + filePath + '.jar').exists()
+}
+
+void addModularCompile(String repoName, String fileName, boolean changingB) {
+    if (this.checkLib(fileName))
+        this.dependencies.implementation name: fileName
+    else
+        this.dependencies.implementation (repoName) { changing = changingB }
+}
+
+void addModularInternal(String repoName, String fileName, boolean changingB) {
+    if (this.checkLib(fileName))
+        this.dependencies.internalLibs name: fileName
+    else
+        this.dependencies.internalLibs (repoName) { changing = changingB }
+}
+
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.internalLibs.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+processResources {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from (sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: "1.3"]
+    }
+}
+
+test {
+	useJUnitPlatform()
+
+	testLogging {
+        exceptionFormat = 'full'
+        outputs.upToDateWhen { false }
+        showStandardStreams = true
+    }
+}

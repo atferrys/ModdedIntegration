@@ -1,0 +1,10 @@
+name: ModdedIntegration
+main: it.uknowngino.moddedintegration.main.ModdedIntegration
+version: @version@
+author: UknownGino
+authors: [LeStegii]
+description: Auto-populates essentials items.csv
+softdepend: [Essentials]
+commands:
+    moddedintegration:
+        description: Modded Integration Command

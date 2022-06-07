@@ -1,9 +1,0 @@
-name: ModdedIntegration
-main: it.uknowngino.moddedintegration.main.ModdedIntegration
-version: 1.3
-author: UknownGino
-description: Auto-populates essentials items.csv
-softdepend: [Essentials]
-commands:
-    moddedintegration:
-     description: Modded Integration Command
