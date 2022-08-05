@@ -1,10 +1,10 @@
 package it.uknowngino.moddedintegration.implementation;
 
 import it.uknowngino.moddedintegration.constructors.PopulationResult;
+import it.uknowngino.moddedintegration.main.ModdedIntegration;
 import it.uknowngino.moddedintegration.utils.IntegrationUtils;
 import it.uknowngino.moddedintegration.utils.LogUtils;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import java.io.BufferedWriter;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class V1_12_Implementation implements PopulationImplementation {
 
-    private final File itemsFile = new File(Bukkit.getPluginManager().getPlugin("Essentials").getDataFolder() + File.separator + getItemsFileName());
+    private final File itemsFile = new File(ModdedIntegration.getEssentials().getDataFolder() + File.separator + getItemsFileName());
 
     @Override
     public String getItemsFileName() {
