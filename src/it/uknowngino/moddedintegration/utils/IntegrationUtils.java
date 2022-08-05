@@ -5,15 +5,16 @@ import it.uknowngino.moddedintegration.config.Config;
 import it.uknowngino.moddedintegration.constructors.PopulationResult;
 import it.uknowngino.moddedintegration.implementation.PopulationImplementation;
 import it.uknowngino.moddedintegration.main.ModdedIntegration;
-//import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.logging.Level;
 
+import static it.uknowngino.moddedintegration.main.ModdedIntegration.PLUGIN_MANAGER;
 import static it.uknowngino.moddedintegration.main.ModdedIntegration.SERVER_VERSION;
 
 public class IntegrationUtils {
@@ -21,10 +22,9 @@ public class IntegrationUtils {
 	static { assert SERVER_VERSION != null; }
 	public static final PopulationImplementation IMPLEMENTATION = SERVER_VERSION.getImplementation();
 
-	public static final File ITEMS_FILE = new File(Bukkit.getPluginManager().getPlugin("Essentials").getDataFolder() + File.separator + IMPLEMENTATION.getItemsFileName());
+	public static final File ITEMS_FILE = new File(ModdedIntegration.getEssentials().getDataFolder() + File.separator + IMPLEMENTATION.getItemsFileName());
 
 	private static final BukkitScheduler SCHEDULER = Bukkit.getScheduler();
-	private static final ConsoleCommandSender CONSOLE_SENDER = Bukkit.getConsoleSender();
 
 	public static PopulationResult populateItemsFile() {
 
@@ -49,7 +49,7 @@ public class IntegrationUtils {
 		} else {
 			
 			LogUtils.log(Level.SEVERE, "EssentialsX's " + IMPLEMENTATION.getItemsFileName() + " can't be found! Disabling ModdedIntegration...");
-			Bukkit.getPluginManager().disablePlugin(ModdedIntegration.getInstance());
+			PLUGIN_MANAGER.disablePlugin(ModdedIntegration.getInstance());
 			
 		}
 
@@ -68,7 +68,6 @@ public class IntegrationUtils {
 				if(ITEMS_FILE.exists() && ITEMS_FILE.delete()) {
 
 					Files.copy(defaultFile, ITEMS_FILE.toPath());
-					//IOUtils.copy(defaultFile, new FileOutputStream(ITEMS_FILE));
 					LogUtils.log(Level.INFO, "The EssentialsX's " + IMPLEMENTATION.getItemsFileName() + " file has been reset to the default values. Reloading EssentialsX...");
 					reloadEssentials();
 
@@ -98,7 +97,7 @@ public class IntegrationUtils {
 
 	public static void reloadEssentials() {
 
-		SCHEDULER.runTaskLater(ModdedIntegration.getInstance(), () -> Bukkit.dispatchCommand(CONSOLE_SENDER, "essentials reload"), Config.reload_delay);
+		SCHEDULER.runTaskLater(ModdedIntegration.getInstance(), () -> ModdedIntegration.getEssentials().reload(), Config.reload_delay);
 
 	}
 

@@ -9,7 +9,10 @@ import org.bukkit.Bukkit;
 
 import javax.annotation.Nonnull;
 import java.util.Arrays;
+import java.util.function.Supplier;
 import java.util.logging.Level;
+
+import static it.uknowngino.moddedintegration.main.ModdedIntegration.PLUGIN_MANAGER;
 
 public enum ServerVersion {
 
@@ -17,10 +20,24 @@ public enum ServerVersion {
     V1_16(V1_16_Implementation.class);
 
     private final Class<? extends PopulationImplementation> implementationClass;
+    private final Supplier<Boolean> customVersionCheck;
+
+    ServerVersion(Class<? extends PopulationImplementation> implementationClass, Supplier<Boolean> customVersionCheck) {
+
+        this.implementationClass = implementationClass;
+        this.customVersionCheck = customVersionCheck;
+
+    }
 
     ServerVersion(Class<? extends PopulationImplementation> implementationClass) {
 
-        this.implementationClass = implementationClass;
+        this(implementationClass, null);
+
+    }
+
+    public Supplier<Boolean> getCustomVersionCheck() {
+
+        return customVersionCheck;
 
     }
 
@@ -35,7 +52,7 @@ public enum ServerVersion {
 
             LogUtils.log(Level.SEVERE, "Unable to obtain " + name() + " implementation instance: " + e.getMessage());
             e.printStackTrace();
-            Bukkit.getPluginManager().disablePlugin(ModdedIntegration.getInstance());
+            PLUGIN_MANAGER.disablePlugin(ModdedIntegration.getInstance());
 
             return null;
 
@@ -43,21 +60,39 @@ public enum ServerVersion {
 
     }
 
-    public static ServerVersion getCurrentServerVersion() {
+    public boolean isCurrentServerVersion() {
 
         String[] versionString = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].toUpperCase().split("_");
 
-        try {
+        return String.join("_", Arrays.copyOf(versionString, versionString.length - 1)).equalsIgnoreCase(name());
 
-            return valueOf(String.join("_", Arrays.copyOf(versionString, versionString.length - 1)));
+    }
 
-        } catch (IllegalArgumentException e) {
+    public static ServerVersion getCurrentServerVersion() {
 
-            LogUtils.log(Level.SEVERE, "The server version in use isn't supported by ModdedIntegration! You can open an Issue on GitHub and ask for support.");
-            Bukkit.getPluginManager().disablePlugin(ModdedIntegration.getInstance());
-            return null;
+        // Custom Version Check
+
+        for(ServerVersion serverVersion : values()) {
+
+            Supplier<Boolean> customVersionCheck = serverVersion.getCustomVersionCheck();
+
+            if(customVersionCheck != null && customVersionCheck.get()) return serverVersion;
 
         }
+
+        // Server Version Check
+
+        return Arrays.stream(values())
+                .filter(ServerVersion::isCurrentServerVersion)
+                .findFirst()
+                .orElseGet(() -> {
+
+                    LogUtils.log(Level.SEVERE, "The server version in use isn't supported by ModdedIntegration! You can open an Issue on GitHub and ask for support.");
+                    PLUGIN_MANAGER.disablePlugin(ModdedIntegration.getInstance());
+
+                    return null;
+
+                });
 
     }
 
