@@ -2,17 +2,20 @@ package it.uknowngino.moddedintegration.commands;
 
 import it.uknowngino.moddedintegration.config.Config;
 import it.uknowngino.moddedintegration.constructors.PopulationResult;
-import org.bukkit.Sound;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-
+import it.uknowngino.moddedintegration.main.ModdedIntegration;
 import it.uknowngino.moddedintegration.utils.ChatUtils;
 import it.uknowngino.moddedintegration.utils.IntegrationUtils;
-import it.uknowngino.moddedintegration.main.ModdedIntegration;
+import it.uknowngino.moddedintegration.utils.LogUtils;
+import org.bukkit.Sound;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
-public class ModdedIntegrationCommand implements CommandExecutor {
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+
+public class ModdedIntegrationCommand implements CommandExecutor, TabCompleter {
 
 	private static final String USE_MESSAGE = new StringBuilder()
 			.append("\n &b» &b&lMODDEDINTEGRATION COMMANDS")
@@ -27,76 +30,84 @@ public class ModdedIntegrationCommand implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 
-		if(sender instanceof Player && cmd.getName().equalsIgnoreCase("moddedintegration")) {
+		if(cmd.getName().equalsIgnoreCase("moddedintegration")) {
 
-			Player player = (Player) sender;
+			if(sender instanceof Player) {
 
-			if(player.hasPermission("moddedintegration.command.moddedintegration")) {
+				Player player = (Player) sender;
 
-				if(args.length > 0) {
+				if(player.hasPermission("moddedintegration.command.moddedintegration")) {
 
-					switch(args[0].toLowerCase()) {
+					if(args.length > 0) {
 
-						case "info":
-							player.sendMessage(ChatUtils.color("&8(&b&l!&8) &7This server is running &fModdedIntegration &7version &f" + ModdedIntegration.getInstance().getDescription().getVersion() + " &7by &fUknownGino&7 on &fImplementation " + ModdedIntegration.SERVER_VERSION + "&7."));
-							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
-							break;
+						switch(args[0].toLowerCase()) {
 
-						case "reset":
-
-							if(IntegrationUtils.resetItemsFile()) {
-
-								player.sendMessage(ChatUtils.color("&a&l» SUCCESS! &7The EssentialsX's &fitems file&7 has been reset successfully."));
+							case "info":
+								player.sendMessage(ChatUtils.color("&8(&b&l!&8) &7This server is running &fModdedIntegration &7version &f" + ModdedIntegration.getInstance().getDescription().getVersion() + " &7by &fUknownGino&7 on &fImplementation " + ModdedIntegration.SERVER_VERSION + "&7."));
 								player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
+								break;
 
-							} else {
+							case "reset":
 
-								player.sendMessage(ChatUtils.color("&c&l» ERROR! &7An error occurred while resetting the EssentialsX's &fitems file&7! Check the Console for more information."));
-								player.playSound(player.getLocation(), Sound.ENTITY_BAT_DEATH, 100, 1);
+								if(IntegrationUtils.resetItemsFile()) {
 
-							}
+									player.sendMessage(ChatUtils.color("&a&l» SUCCESS! &7The EssentialsX's &fitems file&7 has been reset successfully."));
+									player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
 
-							break;
+								} else {
 
-						case "populate":
+									player.sendMessage(ChatUtils.color("&c&l» ERROR! &7An error occurred while resetting the EssentialsX's &fitems file&7! Check the Console for more information."));
+									player.playSound(player.getLocation(), Sound.ENTITY_BAT_DEATH, 100, 1);
 
-							PopulationResult populationResult = IntegrationUtils.populateItemsFile();
+								}
 
-							if(populationResult == null) {
+								break;
 
-								player.sendMessage(ChatUtils.color("&c&l» ERROR! &7An error occurred while populating the EssentialsX's &fitems file&7! Check the Console for more information."));
-								player.playSound(player.getLocation(), Sound.ENTITY_BAT_DEATH, 100, 1);
+							case "populate":
 
-							} else {
+								PopulationResult populationResult = IntegrationUtils.populateItemsFile();
 
-								player.sendMessage(ChatUtils.color("&8(&b&l!&8) &7The &fEssentialsX's items&7 has been forcibly populated with &f" + populationResult.getPopulatedItems() + " newly loaded materials&7 in &f" + populationResult.getTimeTook() + "ms&7."));
-								player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
+								if(populationResult == null) {
 
-							}
+									player.sendMessage(ChatUtils.color("&c&l» ERROR! &7An error occurred while populating the EssentialsX's &fitems file&7! Check the Console for more information."));
+									player.playSound(player.getLocation(), Sound.ENTITY_BAT_DEATH, 100, 1);
 
-							break;
+								} else {
 
-						case "reload":
-							Config.reload();
-							player.sendMessage(ChatUtils.color("&8(&b&l!&8) &7The config has been reloaded &fsuccessfully&7."));
-							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 100, 1);
-							break;
+									player.sendMessage(ChatUtils.color("&8(&b&l!&8) &7The &fEssentialsX's items&7 has been forcibly populated with &f" + populationResult.getPopulatedItems() + " newly loaded materials&7 in &f" + populationResult.getTimeTook() + "ms&7."));
+									player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100, 1);
 
-						default:
-							player.sendMessage(ChatUtils.color(USE_MESSAGE));
-							break;
+								}
+
+								break;
+
+							case "reload":
+								Config.reload();
+								player.sendMessage(ChatUtils.color("&8(&b&l!&8) &7The config has been reloaded &fsuccessfully&7."));
+								player.playSound(player.getLocation(), Sound.BLOCK_NOTE_PLING, 100, 1);
+								break;
+
+							default:
+								player.sendMessage(ChatUtils.color(USE_MESSAGE));
+								break;
+
+						}
+
+					} else {
+
+						player.sendMessage(ChatUtils.color(USE_MESSAGE));
 
 					}
 
 				} else {
 
-					player.sendMessage(ChatUtils.color(USE_MESSAGE));
+					player.sendMessage(ChatUtils.color("&8[&4⚠&8] &7You do not have permission to use that command!"));
 
 				}
 
 			} else {
 
-				player.sendMessage(ChatUtils.color("&8[&4⚠&8] &7You do not have permission to use that command!"));
+				LogUtils.log(Level.WARNING, "This command can only be run by players!");
 
 			}
 
@@ -104,6 +115,14 @@ public class ModdedIntegrationCommand implements CommandExecutor {
 		
 		return false;
 		
+	}
+
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+
+		return args.length == 1 ? Arrays.asList("info", "reset", "populate", "reload") : Collections.emptyList();
+
 	}
 
 }
