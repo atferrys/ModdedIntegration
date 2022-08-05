@@ -23,7 +23,7 @@ jobs:
       - name: Set variables
         id: variables
         run: |
-          echo "::set-output name=commit_branch::${branch#refs/heads/}"
+          echo "::set-output name=commit_branch::$GITHUB_REF_NAME"
           echo "::set-output name=commit_hash::$(git rev-parse --short "$GITHUB_SHA")"
 
       - name: Build using Gradle
