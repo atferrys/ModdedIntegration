@@ -31,7 +31,8 @@ public class ModdedIntegration extends JavaPlugin {
 			Config.reload();
 			IntegrationUtils.populateItemsFile();
 
-			registerCommands();
+			getCommand("moddedintegration").setExecutor(new ModdedIntegrationCommand());
+
 			LogUtils.log(Level.INFO, "The plugin has been enabled successfully with Implementation " + SERVER_VERSION + ".");
 
 		} else {
@@ -47,12 +48,6 @@ public class ModdedIntegration extends JavaPlugin {
 
 		LogUtils.log(Level.INFO, "The plugin has been disabled.");
 		
-	}
-
-	private void registerCommands() {
-
-		getCommand("moddedintegration").setExecutor(new ModdedIntegrationCommand());
-
 	}
 
 	public static ModdedIntegration getInstance() {
