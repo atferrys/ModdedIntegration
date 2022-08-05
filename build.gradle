@@ -80,6 +80,19 @@ jar {
         attributes 'Manifest-Version': '1.0'
     }
 
+    boolean gitBuild = project.hasProperty('commit_branch') && project.hasProperty('commit_hash')
+
+    if(gitBuild) {
+
+        String commit_branch = getProperty('commit_branch').replace('/', '_')
+        String commit_hash = getProperty('commit_hash')
+
+        project.plugin_version = project.plugin_version + '-GIT-' + commit_branch + '-' + commit_hash
+
+    }
+
+    baseName rootProject.name + '-' + project.plugin_version
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from {
         configurations.internalLibs.collect {
@@ -91,7 +104,7 @@ jar {
 processResources {
 	duplicatesStrategy = DuplicatesStrategy.INCLUDE
     from (sourceSets.main.resources.srcDirs) {
-        filter ReplaceTokens, tokens: [version: "1.4"]
+        filter ReplaceTokens, tokens: [version: project.plugin_version]
     }
 }
 
