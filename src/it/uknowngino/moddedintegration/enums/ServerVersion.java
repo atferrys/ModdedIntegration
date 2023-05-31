@@ -3,6 +3,7 @@ package it.uknowngino.moddedintegration.enums;
 import it.uknowngino.moddedintegration.implementation.PopulationImplementation;
 import it.uknowngino.moddedintegration.implementation.V1_12_Implementation;
 import it.uknowngino.moddedintegration.implementation.V1_16_Implementation;
+import it.uknowngino.moddedintegration.implementation.V1_18_Implementation;
 import it.uknowngino.moddedintegration.main.ModdedIntegration;
 import it.uknowngino.moddedintegration.utils.LogUtils;
 import org.bukkit.Bukkit;
@@ -17,7 +18,8 @@ import static it.uknowngino.moddedintegration.main.ModdedIntegration.PLUGIN_MANA
 public enum ServerVersion {
 
     V1_12(V1_12_Implementation.class),
-    V1_16(V1_16_Implementation.class);
+    V1_16(V1_16_Implementation.class),
+    V1_18(V1_18_Implementation.class);
 
     private final Class<? extends PopulationImplementation> implementationClass;
     private final Supplier<Boolean> customVersionCheck;
