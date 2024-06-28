@@ -18,7 +18,7 @@ A simple Minecraft Plugin that auto-populates the [Essentials](https://www.spigo
 
 # ✅ Requirements
 This Plugin needs some dependencies in order to work.
-* [Magma 1.12.2](https://magmafoundation.org/#download) or [1.16.5](https://magmafoundation.org/#download)
+* [Mohist](https://mohistmc.com), [Arclight](https://github.com/IzzelAliz/Arclight), Magma _(abandoned)_ or any other hybrid server implementation.
 * [EssentialsX](https://www.spigotmc.org/resources/essentialsx.9089/)
 
 # 🔮 How do I use it?
